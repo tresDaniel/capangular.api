@@ -1,0 +1,29 @@
+<div>
+    <h1></h1>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+        <label for="hero_id">Heroes: </label>
+        <select name="hero_id" ngModel>
+            <option *ngFor="let hero of heroes" value="{{hero.id}}">{{hero.localized_name}}</option>
+        </select>
+        <input type="submit" value="Find">
+    </form>
+    <span *ngIf="error" style="color:red; font-style: oblique;">{{ errorMessage }}</span>
+</div>
+
+<div *ngIf="hero">
+    <h1>Players Rank - {{ hero }}</h1>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Avatar</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+        <tr *ngFor="let ranking of rankings;">
+            <td>{{ rankings.indexOf(ranking) +1 }}</td>
+            <td><img src="{{ ranking.avatar }}"></td>
+            <td>{{ ranking.name }}</td>
+            <td>{{ ranking.score | number: '1.0-0' }}</td>
+        </tr>
+    </table>
+</div>
