@@ -1,5 +1,26 @@
 
+.form-container {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 200px;
+}
+
+.form-field {
+    display: block;
+}
+
 .inner {
+    width: 50%;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+}
+
+.main {
+    background-color: aliceblue;
+    border-radius: 10px;
     width: 50%;
     margin: 0 auto;
 }

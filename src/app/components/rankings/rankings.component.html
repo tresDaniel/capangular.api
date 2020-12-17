@@ -1,70 +1,62 @@
-<div>
-    <h1></h1>
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
-        <label for="hero_id">Heroes: </label>
-        <div class="browser-default">
-            <select name="hero_id" ngModel>
-                <option *ngFor="let hero of heroes" value="{{hero.id}}">{{hero.localized_name}}</option>
-            </select>
-            <input type="submit" value="Search">
-        </div>
-    </form>
-    <span *ngIf="error" style="color:red; font-style: oblique;">{{ errorMessage }}</span>
-</div>
-<br>
-<div *ngIf="hero">
-    <h1>Top 100 Players - {{ hero }}</h1>
-</div>
-<!-- <div  >
-    
-    <table>
-        <thead> 
-        <tr>
-            <th>#</th>
-            <th>Avatar</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let ranking of rankings;">
-            <td>{{ rankings.indexOf(ranking) +1 }}</td>
-            <td><img src="{{ ranking.avatar }}"></td>
-            <td>{{ ranking.name }}</td>
-            <td>{{ ranking.score | number: '1.0-0' }}</td>
-        </tr>
-    </tbody>
-    </table>
-</div> -->
-<table mat-table [dataSource]="rankings" class="mat-elevation-z8 inner" *ngIf="hero">
+<div class="main">
+    <div class="form-container">
+        <h1>Players Ranking by Hero</h1>
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+            <mat-form-field class="form-field" appearance="fill">
+                <mat-label for="hero_id">Select a hero</mat-label>
+                <mat-select name="hero_id" ngModel required>
+                <mat-option *ngFor="let hero of heroes" [value]="hero.id">
+                    {{hero.localized_name}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-error *ngIf="error">{{ errorMessage }}</mat-error>
+            <button style="width:100%" mat-raised-button color="primary" type="submit">Search</button>
+        </form>
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="#">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element">{{rankings.indexOf(element)+1}}</td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="avatar">
-      <th mat-header-cell *matHeaderCellDef> Avatar </th>
-      <td mat-cell *matCellDef="let element"><img src="{{ element.avatar }}"/> </td>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{ element.personaname }} </td>
-    </ng-container>
-  
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="score">
-      <th mat-header-cell *matHeaderCellDef> Score </th>
-      <td mat-cell *matCellDef="let element"> {{ element.score  | number: '1.0-0' }} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <div *ngIf="loading" class="mat-card-style">
+            <mat-progress-spinner color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+        
+    </div>
+
+    <br>
+
+    <div *ngIf="hero" >
+    <!-- Tabela de exibição de ranking -->
+        <h2 style="text-align: center;">{{ hero }} - Top 100</h2>
+        <table mat-table [dataSource]="rankings" class="mat-elevation-z8 inner">
+
+            <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let ranking">{{ rankings.data.indexOf(ranking)+1 }}</td>
+            </ng-container>
+        
+            <ng-container matColumnDef="avatar">
+            <th mat-header-cell *matHeaderCellDef> Avatar </th>
+            <td mat-cell *matCellDef="let ranking"><img src="{{ ranking.avatar }}"/> </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let ranking"> {{ ranking.personaname }} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="score">
+            <th mat-header-cell *matHeaderCellDef> Score </th>
+            <td mat-cell *matCellDef="let ranking"> {{ ranking.score  | number: '1.0-0' }} </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator class="inner" #paginador
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [length]="100"
+            [pageSize]="5"
+            showFirstLastButtons></mat-paginator>
+    </div>
+
+</div>

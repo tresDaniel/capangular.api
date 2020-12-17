@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Heroes } from 'src/app/models/heroes.model';
 import { Ranking, Rankings } from 'src/app/models/rankings.model';
 import { HeroesService } from 'src/app/services/heroes.service';
@@ -15,14 +17,18 @@ export class RankingsComponent implements OnInit {
   hero_id: number = 0;
   hero:any;
   heroes:Heroes[] = [];
-  rankings:Ranking[] = [];
+  rankings!: MatTableDataSource<Ranking[]>;
 
+  loading: boolean = false;
   error: boolean = false;
   errorMessage:string = '';
 
   displayedColumns: string[] = ['#', 'avatar', 'name', 'score'];
+  @ViewChild('paginador') paginator!: MatPaginator;
 
-  constructor(private service:RankingsService, private heroesService: HeroesService) { }
+  constructor(private service:RankingsService, private heroesService: HeroesService) {
+
+   }
 
   ngOnInit(): void {
     this.findAllHeroes();
@@ -39,6 +45,7 @@ export class RankingsComponent implements OnInit {
       this.error = true;
       this.errorMessage = 'Please select a Hero';
     }
+    this.loading=false;
   }
 
   findAllHeroes() {
@@ -55,8 +62,9 @@ export class RankingsComponent implements OnInit {
 
   findByHero(hero_id: number){
     this.service.findByHero(hero_id).subscribe((response:any) => {
-      this.rankings = response.rankings;
-      console.log(this.rankings);
+      this.loading = true;
+      this.rankings = new MatTableDataSource(response.rankings);
+      this.rankings.paginator = this.paginator;
     });
   }
 
