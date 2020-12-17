@@ -20,6 +20,8 @@ export class RankingsComponent implements OnInit {
   error: boolean = false;
   errorMessage:string = '';
 
+  displayedColumns: string[] = ['#', 'avatar', 'name', 'score'];
+
   constructor(private service:RankingsService, private heroesService: HeroesService) { }
 
   ngOnInit(): void {
@@ -42,7 +44,6 @@ export class RankingsComponent implements OnInit {
   findAllHeroes() {
     this.heroesService.findAll().subscribe((response:any) => {
       this.heroes = response;
-      console.log(response);
     });
   }
 
@@ -55,6 +56,7 @@ export class RankingsComponent implements OnInit {
   findByHero(hero_id: number){
     this.service.findByHero(hero_id).subscribe((response:any) => {
       this.rankings = response.rankings;
+      console.log(this.rankings);
     });
   }
 

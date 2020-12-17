@@ -10,6 +10,7 @@ export class RankingsService {
   constructor(private http:HttpClient) { }
 
   findByHero(hero_id: number) {
-    return this.http.get<Rankings>(apiURL + 'rankings?hero_id=' + hero_id);
+    let url = apiURL + 'rankings?hero_id=' + hero_id;
+    return this.http.get<Rankings>(url);
   }
 }

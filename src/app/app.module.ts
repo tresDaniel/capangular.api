@@ -8,7 +8,8 @@ import { RankingsService } from './services/rankings.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { HeroesService } from './services/heroes.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    BrowserAnimationsModule
-
+    MatTableModule
   ],
   providers: [RankingsService, HeroesService],
   bootstrap: [AppComponent]
